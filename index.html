@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <!-- 
+    [UTF-8 인코딩 설정]
+    한국어와 중국어(간체자)가 깨지지 않고 정상적으로 표시되도록 지정합니다.
+  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>한중다리 (韩中桥) - 한중 언어교환 동아리</title>
+
+  <style>
+    /* ========== CSS 스타일 영역 (기본 설정 및 색상 테마) ========== */
+    :root {
+      --primary-color: #2563eb;       /* 메인 블루 */
+      --primary-hover: #1d4ed8;       /* 버튼 호버 색상 */
+      --secondary-color: #f97316;     /* 포인트 오렌지 */
+      --bg-color: #f8fafc;            /* 페이지 배경색 */
+      --card-bg: #ffffff;             /* 카드 배경색 */
+      --text-main: #1e293b;           /* 본문 주요 텍스트 */
+      --text-sub: #64748b;            /* 중국어 번역 및 부제목 텍스트 */
+      --border-color: #e2e8f0;        /* 테두리 색상 */
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Malgun Gothic", "Microsoft YaHei", "Noto Sans CJK KR", "Noto Sans CJK SC", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 0 16px 60px 16px;
+    }
+
+    /* 공통 레이아웃 컨테이너 */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    /* 번역용 작은 텍스트 공통 스타일 */
+    .sub-translate {
+      display: block;
+      font-size: 0.85em;
+      color: var(--text-sub);
+      font-weight: normal;
+      margin-top: 4px;
+    }
+
+    /* 1. 헤더 영역 */
+    header {
+      text-align: center;
+      padding: 50px 20px 40px;
+      background: linear-gradient(135deg, #eff6ff 0%, #e0e7ff 100%);
+      border-radius: 0 0 24px 24px;
+      margin-bottom: 40px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .club-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--primary-color);
+      margin-bottom: 12px;
+    }
+
+    .club-title .sub-translate {
+      font-size: 1.1rem;
+      color: #475569;
+      font-weight: 500;
+    }
+
+    .intro-box {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 24px;
+      background: #ffffff;
+      border-radius: 30px;
+      box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #0f172a;
+    }
+
+    .intro-box .sub-translate {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    /* 섹션 공통 제목 */
+    .section-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* 2. 동아리 활동 카드 영역 (3개 카드) */
+    .activities-section {
+      margin-bottom: 50px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      text-align: center;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      border-color: #bfdbfe;
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 10px;
+    }
+
+    .card-desc {
+      font-size: 0.95rem;
+      color: #475569;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    /* 3. 이번 달 활동 일정 표 영역 */
+    .schedule-section {
+      margin-bottom: 50px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 30px 24px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-container {
+      overflow-x: auto; /* 작은 화면에서도 표가 깨지지 않도록 가로 스크롤 지원 */
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    th {
+      background-color: #f1f5f9;
+      color: #334155;
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    tbody tr:hover {
+      background-color: #f8fafc;
+    }
+
+    td {
+      font-size: 0.95rem;
+      color: #1e293b;
+    }
+
+    /* 4. 가입 문의 버튼 및 메시지 영역 */
+    .inquiry-section {
+      text-align: center;
+      padding: 30px 20px;
+      background: #ffffff;
+      border: 2px dashed #cbd5e1;
+      border-radius: 16px;
+    }
+
+    .inquiry-btn {
+      background-color: var(--primary-color);
+      color: #ffffff;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 36px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .inquiry-btn:hover {
+      background-color: var(--primary-hover);
+      transform: scale(1.02);
+    }
+
+    .inquiry-btn:active {
+      transform: scale(0.98);
+    }
+
+    .btn-sub {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: normal;
+      opacity: 0.9;
+      margin-top: 2px;
+    }
+
+    /* 클릭 후 나타나는 안내 메시지 상자 */
+    .inquiry-result {
+      display: none; /* 처음에는 숨김 */
+      margin-top: 20px;
+      padding: 16px 20px;
+      background-color: #ecfdf5;
+      border: 1px solid #a7f3d0;
+      border-radius: 12px;
+      color: #065f46;
+      font-size: 1.05rem;
+      font-weight: 600;
+      animation: fadeIn 0.3s ease-in-out forwards;
+    }
+
+    .inquiry-result .sub-translate {
+      color: #047857;
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. 헤더 영역: 동아리 이름 및 한 줄 소개 -->
+  <header>
+    <div class="container">
+      <h1 class="club-title">
+        한중다리
+        <span class="sub-translate">韩中桥</span>
+      </h1>
+      
+      <div class="intro-box">
+        <p>한국어와 중국어를 서로 가르치며 함께 성장합니다</p>
+        <span class="sub-translate">互教韩语和中文，共同成长</span>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- 2. 동아리 세 가지 주요 활동 (카드로 배치) -->
+    <section class="activities-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          동아리 활동 소개
+          <span class="sub-translate">社团活动介绍</span>
+        </h2>
+      </div>
+
+      <div class="card-grid">
+        <!-- 카드 1: 주간 언어교환 -->
+        <div class="card">
+          <div class="card-icon">🗣️</div>
+          <h3 class="card-title">
+            주간 언어교환
+            <span class="sub-translate">每周语言交换</span>
+          </h3>
+          <p class="card-desc">
+            매주 정기 모임을 통해 1:1 또는 소그룹으로 한국어와 중국어 일상 대화를 연습합니다.
+            <span class="sub-translate">每周定期聚会，以1对1或小组形式练习韩中日常会话。</span>
+          </p>
+        </div>
+
+        <!-- 카드 2: 전공 과제 스터디 -->
+        <div class="card">
+          <div class="card-icon">📚</div>
+          <h3 class="card-title">
+            전공 과제 스터디
+            <span class="sub-translate">专业作业学习小组</span>
+          </h3>
+          <p class="card-desc">
+            전공 강의 내용 복습, 리포트 작성 및 번역 과제를 서로 질문하고 도우며 해결합니다.
+            <span class="sub-translate">针对专业课内容复习、论文写作与翻译作业进行互助探讨。</span>
+          </p>
+        </div>
+
+        <!-- 카드 3: 문화 체험 행사 -->
+        <div class="card">
+          <div class="card-icon">🥟</div>
+          <h3 class="card-title">
+            문화 체험 행사
+            <span class="sub-translate">文化体验活动</span>
+          </h3>
+          <p class="card-desc">
+            양국의 전통 음식 만들기, 명소 탐방, 명절 기념 파티 등 다양한 문화 교류를 진행합니다.
+            <span class="sub-translate">制作两国传统美食、游览名胜古迹、共庆传统节日等多元文化活动。</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. 이번 달 활동 일정 (테이블로 표시) -->
+    <section class="schedule-section">
+      <div class="section-header">
+        <h2 class="section-title">
+          이번 달 활동 일정
+          <span class="sub-translate">本月活动日程</span>
+        </h2>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>
+                날짜
+                <span class="sub-translate">日期</span>
+              </th>
+              <th>
+                활동 내용
+                <span class="sub-translate">活动内容</span>
+              </th>
+              <th>
+                장소
+                <span class="sub-translate">地点</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                11월 15일 (금) 18:00
+                <span class="sub-translate">11月15日 (周五) 18:00</span>
+              </td>
+              <td>
+                11월 제1차 주간 언어교환 모임
+                <span class="sub-translate">11月第1次每周语言交换例会</span>
+              </td>
+              <td>
+                학생회관 302호 세미나실
+                <span class="sub-translate">学生活动中心 302研讨室</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                11월 22일 (금) 19:00
+                <span class="sub-translate">11月22日 (周五) 19:00</span>
+              </td>
+              <td>
+                기말 대비 전공 과제 스터디
+                <span class="sub-translate">期末备考专业作业学习小组</span>
+              </td>
+              <td>
+                중앙도서관 4층 그룹스터디룸
+                <span class="sub-translate">中央图书馆 4楼小组学习室</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                11월 29일 (금) 17:30
+                <span class="sub-translate">11月29日 (周五) 17:30</span>
+              </td>
+              <td>
+                한중 전통 음식 문화 체험 행사 (만두 빚기)
+                <span class="sub-translate">中韩传统美食文化体验活动 (包饺子)</span>
+              </td>
+              <td>
+                동아리 연합관 다목적 조리실
+                <span class="sub-translate">社团联合馆 多功能烹饪活动室</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- 4. 가입 문의 영역 (버튼 및 클릭 이벤트) -->
+    <section class="inquiry-section">
+      <button id="inquiryBtn" class="inquiry-btn" type="button">
+        가입 문의
+        <span class="btn-sub">入会咨询</span>
+      </button>
+
+      <!-- 클릭 시 노출될 안내 문구 -->
+      <div id="inquiryMessage" class="inquiry-result" role="alert" aria-live="polite">
+        <p>가입 문의는 동아리 회장에게 전달해 주세요.</p>
+        <span class="sub-translate">入会咨询请联系社长。</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========== JavaScript 영역 (버튼 클릭 상호작용) ========== -->
+  <script>
+    // 문서 로드 후 버튼 요소와 결과 메시지 요소를 찾아 이벤트 리스너를 연결합니다.
+    document.addEventListener("DOMContentLoaded", function () {
+      const inquiryBtn = document.getElementById("inquiryBtn");
+      const inquiryMessage = document.getElementById("inquiryMessage");
+
+      if (inquiryBtn && inquiryMessage) {
+        inquiryBtn.addEventListener("click", function () {
+          // 버튼 클릭 시 메시지 상자를 화면에 표시합니다.
+          inquiryMessage.style.display = "block";
+          
+          // 부드럽게 메시지 영역으로 시선을 유도합니다.
+          inquiryMessage.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+      }
+    });
+  </script>
+</body>
+</html>
+
